@@ -1,0 +1,29 @@
+# digitestCRM — yerel PostgreSQL
+# Başlat:  docker compose up -d
+# Durdur:  docker compose down          (veriler korunur)
+# Sıfırla: docker compose down -v       (TÜM veriler silinir; açılışta örnek veriler yeniden yüklenir)
+#
+# Not: Bilgisayarda 5432'yi kullanan başka bir PostgreSQL olduğu için dışarıya 5433 açılır.
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: digitestcrm-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: digitestcrm
+      POSTGRES_USER: digitest
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-digitest_dev}
+      TZ: UTC
+    ports:
+      - "5433:5432"
+    volumes:
+      - digitestcrm-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U digitest -d digitestcrm"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  digitestcrm-data:

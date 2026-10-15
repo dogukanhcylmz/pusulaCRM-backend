@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using DigitestCrm.Api.Data;
 using DigitestCrm.Api.Dtos;
 using DigitestCrm.Api.Models;
+using DigitestCrm.Api.Services.Ai;
 
 namespace DigitestCrm.Api.Services;
 
@@ -71,6 +72,17 @@ public class QuoteService
         await _db.SaveChangesAsync();
         return true;
     }
+
+    /// <summary>
+    /// Açık fırsat: Taslak veya Gönderildi durumunda ve geçerliliği dolmamış teklif.
+    /// Geçerlilik tarihinin son günü (yerel saatle) dahildir. Dashboard ve asistan bu kuralı ortak kullanır.
+    /// </summary>
+    public static bool IsOpen(QuoteDto q, LocalClock clock) =>
+        q.Status is QuoteStatus.Draft or QuoteStatus.Sent && !IsExpired(q, clock);
+
+    /// <summary>Geçerlilik günü geride kalmış mı (yerel saate göre).</summary>
+    public static bool IsExpired(QuoteDto q, LocalClock clock) =>
+        clock.ToLocal(q.ValidUntil).Date < clock.Now.Date;
 
     /// <summary>TKL-2026-0001 biçiminde yılın bir sonraki teklif numarası.</summary>
     private async Task<string> NextNumberAsync()

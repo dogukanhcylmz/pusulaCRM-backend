@@ -216,7 +216,8 @@ public class CrmToolbox
             teklifler = quotes.Select(q => new
             {
                 q.QuoteNumber, q.Title, durum = Labels.Quote(q.Status), genelToplam = q.GrandTotal,
-                olusturma = _clock.Format(q.CreatedAt, false), gecerlilik = _clock.Format(q.ValidUntil, false)
+                olusturma = _clock.Format(q.CreatedAt, false), gecerlilik = _clock.Format(q.ValidUntil, false),
+                suresiDoldu = QuoteService.IsExpired(q, _clock)
             })
         });
     }
@@ -263,7 +264,8 @@ public class CrmToolbox
             {
                 q.QuoteNumber, musteri = q.CustomerName, q.Title, durum = Labels.Quote(q.Status),
                 araToplam = q.SubTotal, genelToplam = q.GrandTotal,
-                olusturma = _clock.Format(q.CreatedAt, false), gecerlilik = _clock.Format(q.ValidUntil, false)
+                olusturma = _clock.Format(q.CreatedAt, false), gecerlilik = _clock.Format(q.ValidUntil, false),
+                suresiDoldu = QuoteService.IsExpired(q, _clock)
             })
         });
     }

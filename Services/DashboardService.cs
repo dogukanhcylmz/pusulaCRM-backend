@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using DigitestCrm.Api.Data;
 using DigitestCrm.Api.Dtos;
 using DigitestCrm.Api.Models;
+using DigitestCrm.Api.Services.Ai;
 
 namespace DigitestCrm.Api.Services;
 
@@ -10,18 +11,20 @@ public class DashboardService
     private readonly AppDbContext _db;
     private readonly ActivityService _activities;
     private readonly QuoteService _quotes;
+    private readonly LocalClock _clock;
 
-    public DashboardService(AppDbContext db, ActivityService activities, QuoteService quotes)
+    public DashboardService(AppDbContext db, ActivityService activities, QuoteService quotes, LocalClock clock)
     {
         _db = db;
         _activities = activities;
         _quotes = quotes;
+        _clock = clock;
     }
 
     public async Task<DashboardDto> GetAsync()
     {
         var quotes = await _quotes.GetAllAsync();
-        var open = quotes.Where(q => q.Status is QuoteStatus.Draft or QuoteStatus.Sent).ToList();
+        var open = quotes.Where(q => QuoteService.IsOpen(q, _clock)).ToList();   // süresi geçenler hariç
 
         return new DashboardDto(
             CustomerCount: await _db.Customers.CountAsync(),

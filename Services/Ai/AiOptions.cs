@@ -2,18 +2,36 @@ namespace DigitestCrm.Api.Services.Ai;
 
 /// <summary>
 /// appsettings.json → "Ai": hangi yapay zeka servisine bağlanılacağı.
-/// OpenAI uyumlu her servis çalışır: Google Gemini (ücretsiz katman), Groq, OpenAI...
+/// OpenAI uyumlu her servis çalışır: OpenRouter (ücretsiz ":free" modeller), Google Gemini, Groq, OpenAI...
+/// Model araç çağırmayı (tools) desteklemelidir; aksi halde asistan kayıt işlemleri yapamaz.
 /// </summary>
 public class AiOptions
 {
     public const string Section = "Ai";
 
-    public string Provider { get; set; } = "Gemini";
-    public string BaseUrl { get; set; } = "https://generativelanguage.googleapis.com/v1beta/openai/";
-    public string Model { get; set; } = "gemini-3.8-flash";
+    public string Provider { get; set; } = "OpenRouter";
+    public string BaseUrl { get; set; } = "https://openrouter.ai/api/v1/";
+    public string Model { get; set; } = "nvidia/nemotron-3-super-120b-a12b:free";
+
+    /// <summary>
+    /// Yedek modeller (sırayla denenir). Asıl model dolu/hatalıysa sıradakine geçilir.
+    /// Sunum sırasında appsettings.json'a eklenip çıkarılabilir; uygulamayı yeniden başlatmak gerekmez.
+    /// </summary>
+    public List<string> FallbackModels { get; set; } = new();
+
+    /// <summary>Hata veren bir model kaç saniye boyunca atlanır.</summary>
+    public int CooldownSeconds { get; set; } = 90;
+
     public string? ApiKey { get; set; }
 
     public bool IsConfigured => !string.IsNullOrWhiteSpace(ApiKey);
+
+    /// <summary>Denenecek modellerin sırası: önce Model, sonra FallbackModels (tekrarsız).</summary>
+    public IEnumerable<string> ModelChain =>
+        new[] { Model }.Concat(FallbackModels)
+            .Where(m => !string.IsNullOrWhiteSpace(m))
+            .Select(m => m.Trim())
+            .Distinct(StringComparer.OrdinalIgnoreCase);
 }
 
 /// <summary>

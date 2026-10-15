@@ -32,7 +32,7 @@ public class FallbackAssistant
         if (m.Contains("teklif"))
         {
             var open = (await _quotes.GetAllAsync())
-                .Where(q => q.Status is QuoteStatus.Draft or QuoteStatus.Sent).ToList();
+                .Where(q => QuoteService.IsOpen(q, _clock)).ToList();
             var sb = new StringBuilder($"{open.Count} açık teklif var, toplam {open.Sum(q => q.GrandTotal).ToString("N2", Tr)} ₺:\n");
             foreach (var q in open.Take(5))
                 sb.AppendLine($"• {q.QuoteNumber} — {q.CustomerName}: {q.GrandTotal.ToString("N2", Tr)} ₺");

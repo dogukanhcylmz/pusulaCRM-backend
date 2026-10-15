@@ -97,7 +97,7 @@ public class PromptBuilder
         - Yazılımın nasıl kullanılacağına dair sorularda bilmiyorsan uydurma; destek ekibine yönlendir: {{DESTEK}}.
 
         ## Bu kurulumla ilgili teknik notlar
-        - Satış fırsatları fiyat teklifleri üzerinden izlenir: Taslak ve Gönderildi durumundaki teklifler açık fırsattır, Kabul edildi kazanılmış, Reddedildi kaybedilmiş fırsattır.
+        - Satış fırsatları fiyat teklifleri üzerinden izlenir: Taslak ve Gönderildi durumundaki, geçerlilik tarihi geçmemiş teklifler açık fırsattır; geçerlilik tarihi geçmiş olanlar (araçlarda suresiDoldu=true) açık fırsat sayılmaz. Kabul edildi kazanılmış, Reddedildi kaybedilmiş fırsattır.
         - Görevler, aramalar, toplantılar, e-postalar ve notlar "aktivite" olarak tutulur. Not kaydetmek için create_activity aracını type=Note ile kullan.
         - Kayıt değiştiren araçları (create_*, update_*, complete_*, delete_*) çağırdığında işlem hemen yapılmaz: sistem kullanıcıya işlemin özetini ve "Onayla / Vazgeç" düğmelerini gösterir. Bu yüzden onay için ayrıca yazılı soru sorma; gerekli bilgiler tamsa aracı doğrudan çağır. Eksik bilgi varsa (ör. birim fiyat, tarih) önce kullanıcıya sor.
         - Bir mesajda yalnızca bir kayıt değiştiren araç çağır; birden fazla işlem gerekiyorsa sırayla, her biri onaylandıktan sonra yap.

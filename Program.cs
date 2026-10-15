@@ -8,9 +8,10 @@ using DigitestCrm.Api.Services.Ai;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ---------- Veritabanı (SQLite: kurulum gerektirmez, tek dosya) ----------
+// ---------- Veritabanı (PostgreSQL, Docker: docker compose up -d) ----------
 builder.Services.AddDbContext<AppDbContext>(o =>
-    o.UseSqlite(builder.Configuration.GetConnectionString("Default") ?? "Data Source=digitestcrm.db"));
+    o.UseNpgsql(builder.Configuration.GetConnectionString("Default")
+                ?? throw new InvalidOperationException("ConnectionStrings:Default tanımlı değil.")));
 
 // ---------- İş katmanı ----------
 builder.Services.AddScoped<CustomerService>();
@@ -24,6 +25,7 @@ builder.Services.Configure<AssistantOptions>(builder.Configuration.GetSection(As
 builder.Services.AddSingleton(sp => new LocalClock(sp.GetRequiredService<IOptions<AssistantOptions>>().Value));
 builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<PendingActionStore>();   // onay bekleyen işlemler
+builder.Services.AddSingleton<ModelHealth>();           // hata veren modelleri geçici atlar
 builder.Services.AddHttpClient<AiClient>();
 builder.Services.AddScoped<CrmToolbox>();
 builder.Services.AddScoped<PromptBuilder>();
@@ -64,12 +66,21 @@ if (app.Environment.IsDevelopment())
 app.UseCors();
 app.MapControllers();
 
-// Veritabanını oluştur ve örnek verileri yükle
+// Veritabanı şemasını migration'larla güncelle ve örnek verileri yükle
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.EnsureCreated();
-    SeedData.Initialize(db);
+    try
+    {
+        db.Database.Migrate();
+        SeedData.Initialize(db);
+    }
+    catch (Exception ex) when (ex is Npgsql.NpgsqlException or System.Net.Sockets.SocketException or InvalidOperationException)
+    {
+        app.Logger.LogCritical(ex,
+            "PostgreSQL'e bağlanılamadı. Docker Desktop açık mı? Proje klasöründe 'docker compose up -d' çalıştırın.");
+        throw;
+    }
 }
 
 var ai = app.Services.GetRequiredService<IOptions<AiOptions>>().Value;
