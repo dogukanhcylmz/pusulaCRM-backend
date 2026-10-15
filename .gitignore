@@ -24,8 +24,10 @@ secrets.json
 TestResults/
 *.log
 
-# Claude Code yerel ayarları (ajanlar ve CLAUDE.md takip edilir)
-.claude/settings.local.json
+# Claude Code çalışma dosyaları (yalnızca lokalde kalır)
+CLAUDE.md
+.claude/
+docs/
 
 # İşletim sistemi
 Thumbs.db
