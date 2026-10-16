@@ -6,7 +6,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>DigitestCrm.Api</RootNamespace>
     <UserSecretsId>digitestcrm-api-6f1c2a</UserSecretsId>
+    <!-- Test projesi aynı klasör altında; API derlemesine karışmasın -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests/**</DefaultItemExcludes>
   </PropertyGroup>
+
+  <!-- Test dosyaları Solution Explorer'da API altında da görünsün (derlenmez, yalnızca gösterim) -->
+  <ItemGroup>
+    <None Include="tests\**" Exclude="tests\**\bin\**;tests\**\obj\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">

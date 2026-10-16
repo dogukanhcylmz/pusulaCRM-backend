@@ -52,6 +52,7 @@ public class PromptBuilder
             "customers" => "Müşteri listesi",
             "quotes" => "Teklif listesi",
             "quote-new" => "Yeni teklif formu",
+            "reports" => "Raporlar sayfası (müşteri, teklif ve aktivite grafikleri)",
             _ => "Genel bakış (ana sayfa)"
         };
     }
