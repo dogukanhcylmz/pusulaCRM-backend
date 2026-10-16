@@ -101,7 +101,9 @@ public class AiClient
         {
             Content = new StringContent(body.ToJsonString(), Encoding.UTF8, "application/json")
         };
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", options.ApiKey);
+        // Ortam değişkenine yapıştırılan anahtarın sonunda satır sonu/boşluk kalabiliyor; başlık bunu kabul etmez.
+        try { request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", options.ApiKey?.Trim()); }
+        catch (FormatException) { throw new AiServiceException(401); }   // anahtar geçersiz → kullanıcıya anlamlı mesaj
 
         using var response = await _http.SendAsync(request, ct);
         var text = await response.Content.ReadAsStringAsync(ct);
