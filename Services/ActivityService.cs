@@ -16,7 +16,6 @@ public class ActivityService
         if (customerId.HasValue) q = q.Where(a => a.CustomerId == customerId);
         if (completed.HasValue) q = q.Where(a => a.IsCompleted == completed);
 
-        // Açık işler önce, sonra tarihe göre
         return await Project(q.OrderBy(a => a.IsCompleted).ThenBy(a => a.DueDate == null).ThenBy(a => a.DueDate)).ToListAsync();
     }
 
@@ -39,17 +38,14 @@ public class ActivityService
             Subject = dto.Subject.Trim(),
             Notes = dto.Notes?.Trim(),
             DueDate = dto.DueDate,
-            IsCompleted = dto.Type == ActivityType.Note // not bir iş değil, kayıttır
+            IsCompleted = dto.Type == ActivityType.Note // not u kayıt olarak düşdündüm
         };
         _db.Activities.Add(entity);
         await _db.SaveChangesAsync();
         return (await GetAsync(entity.Id))!;
     }
 
-    /// <summary>
-    /// Tür, konu, açıklama ve tarihi günceller. Not ile iş türleri (arama, toplantı, e-posta, görev)
-    /// birbirine çevrilemez; notun tarihi tutulmaz. Tamamlanma durumu SetCompletedAsync ile değişir.
-    /// </summary>
+    // Tür, konu, açıklama ve tarihi güncelleme.    NOT yok
     public async Task<ActivityDto?> UpdateAsync(int id, ActivityUpdateDto dto)
     {
         var entity = await _db.Activities.FindAsync(id);

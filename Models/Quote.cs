@@ -2,33 +2,33 @@ namespace DigitestCrm.Api.Models;
 
 public enum QuoteStatus
 {
-    Draft,     // Taslak
-    Sent,      // Gönderildi
-    Accepted,  // Kabul edildi
-    Rejected   // Reddedildi
+    Draft,     
+    Sent,      
+    Accepted,  
+    Rejected   
 }
 
 public class Quote
 {
     public int Id { get; set; }
-    public string QuoteNumber { get; set; } = string.Empty; // Örn: TKL-2026-0001
+    public string QuoteNumber { get; set; } = string.Empty; 
     public int CustomerId { get; set; }
     public Customer? Customer { get; set; }
 
     public string Title { get; set; } = string.Empty;
     public QuoteStatus Status { get; set; } = QuoteStatus.Draft;
-    public decimal TaxRate { get; set; } = 20m; // KDV %
+    public decimal TaxRate { get; set; } = 20m; // KDV
     public DateTime ValidUntil { get; set; } = DateTime.UtcNow.AddDays(30);
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public List<QuoteItem> Items { get; set; } = new();
 
-    // Hesaplanan alanlar veritabanına yazılmaz (bkz. AppDbContext)
     public decimal SubTotal => Items.Sum(i => i.LineTotal);
     public decimal TaxAmount => Math.Round(SubTotal * TaxRate / 100m, 2);
     public decimal GrandTotal => SubTotal + TaxAmount;
 }
 
+//kalemler
 public class QuoteItem
 {
     public int Id { get; set; }

@@ -4,12 +4,9 @@ using DigitestCrm.Api.Models;
 
 namespace DigitestCrm.Api.Services.Ai;
 
-/// <summary>Yazma araçları: önce PrepareWriteAsync ile önizleme, kullanıcı onaylarsa ExecuteWriteAsync.</summary>
 public partial class CrmToolbox
 {
-    // =====================================================================
-    // YAZMA ARAÇLARI — 1) HAZIRLA (doğrula + özet çıkar, veritabanına dokunma)
-    // =====================================================================
+    //doğrulatır  özet çıkarır, db dokunmayacak
     public async Task<PreparedWrite> PrepareWriteAsync(string name, string? argumentsJson)
     {
         try
@@ -211,9 +208,7 @@ public partial class CrmToolbox
             false, Serialize(new QuoteStatusPayload(quote.Id, status)));
     }
 
-    // =====================================================================
-    // YAZMA ARAÇLARI — 2) ÇALIŞTIR (kullanıcı "Onayla" dedikten sonra)
-    // =====================================================================
+    //onaydan sonraki çalıştırma araçları
     public async Task<string> ExecuteWriteAsync(string tool, string payloadJson)
     {
         switch (tool)

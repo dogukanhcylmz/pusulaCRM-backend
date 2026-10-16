@@ -5,15 +5,6 @@ using DigitestCrm.Api.Dtos;
 
 namespace DigitestCrm.Api.Services.Ai;
 
-/// <summary>
-/// Asistanın beyni. Akış:
-///  1) Sistem promptu (kullanıcı, tarih, bulunulan sayfa) + sohbet + araç listesi modele gönderilir.
-///  2) Model bir OKUMA aracı çağırırsa araç çalıştırılır, sonucu modele geri verilir, döngü sürer.
-///  3) Model bir YAZMA aracı çağırırsa işlem çalıştırılmaz; önizlemesi hazırlanır ve kullanıcıya
-///     onay kartı olarak döner. Veritabanına yazma yalnızca ConfirmAsync ile olur.
-///  4) Model metin cevabı yazınca döngü biter (en fazla MaxSteps adım).
-/// API anahtarı yoksa basit, kural tabanlı yedek mod devreye girer.
-/// </summary>
 public class ChatService
 {
     private const int MaxSteps = 6;
@@ -63,8 +54,7 @@ public class ChatService
             {
                 var reply = await _ai.CompleteAsync(messages, _tools.Definitions, ct);
 
-                // Cevabı (tool_calls dahil) olduğu gibi geçmişe ekliyoruz;
-                // bazı modeller (ör. Gemini) ek imza alanlarının geri gönderilmesini bekler.
+                // Cevabı olduğu gibi geçmişe ekliyorum;
                 messages.Add(reply.DeepClone());
 
                 if (reply["tool_calls"] is not JsonArray calls || calls.Count == 0)
@@ -92,7 +82,7 @@ public class ChatService
                     var prepared = await _tools.PrepareWriteAsync(name, args);
                     if (prepared.Error is not null)
                     {
-                        // Eksik/hatalı bilgi: modele bildir, o da kullanıcıya sorsun
+                        // Eksik hatalı bilgiyi modele bildir kullanıcıya sor
                         messages.Add(ToolResult(id, name, JsonSerializer.Serialize(new { ok = false, error = prepared.Error })));
                         continue;
                     }
@@ -100,7 +90,6 @@ public class ChatService
                     var action = _pending.Add(name, prepared.PayloadJson, prepared.Title, prepared.Summary,
                                               prepared.Details ?? new List<string>(), prepared.Danger);
 
-                    // Bir seferde tek onay: kart kullanıcıya gider, döngü burada durur.
                     var intro = reply["content"]?.ToString();
                     return new ChatResponseDto(
                         string.IsNullOrWhiteSpace(intro) ? "" : intro.Trim(),
@@ -109,7 +98,7 @@ public class ChatService
                 }
             }
 
-            return new ChatResponseDto("İsteği tamamlamak için çok fazla adım gerekti. Lütfen daha kısa bir istekle tekrar deneyin.",
+            return new ChatResponseDto("Lütfen daha kısa bir istekle tekrar deneyin.",
                                        new List<string>(), true);
         }
         catch (AiServiceException ex)
@@ -131,7 +120,6 @@ public class ChatService
         }
     }
 
-    /// <summary>Kullanıcı "Onayla" dedi: bekleyen işlemi gerçekten çalıştır.</summary>
     public async Task<ConfirmResultDto> ConfirmAsync(string id)
     {
         var action = _pending.Take(id);
@@ -150,7 +138,6 @@ public class ChatService
         }
     }
 
-    /// <summary>Kullanıcı "Vazgeç" dedi: işlemi sil, hiçbir şey yazma.</summary>
     public ConfirmResultDto Cancel(string id)
     {
         _pending.Take(id);

@@ -5,7 +5,6 @@ using DigitestCrm.Api.Models;
 
 namespace DigitestCrm.Api.Services;
 
-/// <summary>Müşteri iş kuralları. Hem API hem de asistan bu servisi kullanır.</summary>
 public class CustomerService
 {
     private readonly AppDbContext _db;
@@ -18,9 +17,7 @@ public class CustomerService
 
         var list = await Project(query.OrderByDescending(c => c.CreatedAt)).ToListAsync();
 
-        // Arama Türkçe karakterlere duyarlı olsun diye bellekte yapılır.
-        // (Bu ölçekte yeterli; büyük veride veritabanı tam metin araması kullanılır.)
-        if (!string.IsNullOrWhiteSpace(search))
+        if (!string.IsNullOrWhiteSpace(search))  //arama bellekten
             list = list.Where(c => TextMatch.Contains(c.CompanyName, search)
                                 || TextMatch.Contains(c.ContactName, search)
                                 || TextMatch.Contains(c.City, search)
@@ -28,11 +25,11 @@ public class CustomerService
         return list;
     }
 
-    /// <summary>Müşteri listesini sayfa sayfa döner. Arama yoksa sayfalama veritabanında yapılır.</summary>
+    //Müşteri listesini sayfa sayfa döner 
     public async Task<PagedResult<CustomerDto>> GetPagedAsync(string? search, CustomerStatus? status, int page, int pageSize)
     {
-        if (page < 1) throw new ArgumentException("Sayfa numarası 1 veya daha büyük olmalıdır.");
-        if (pageSize < 1 || pageSize > 100) throw new ArgumentException("Sayfa boyutu 1 ile 100 arasında olmalıdır.");
+        if (page < 1) throw new ArgumentException("Sayfa numrası 1 ve ya daha büyük olmalıdır.");
+        if (pageSize < 1 || pageSize > 100) throw new ArgumentException("Sayfa boyutu 1 ile 100 arasında olmalıdr.");
 
         List<CustomerDto> items;
         int total;
@@ -48,7 +45,6 @@ public class CustomerService
         }
         else
         {
-            // Türkçe karakter duyarlı arama bellekte yapıldığı için sayfalama da bellekte yapılır.
             var all = await GetAllAsync(search, status);
             total = all.Count;
             items = all.Skip((page - 1) * pageSize).Take(pageSize).ToList();
@@ -61,10 +57,8 @@ public class CustomerService
     public Task<CustomerDto?> GetAsync(int id) =>
         Project(_db.Customers.AsNoTracking().Where(c => c.Id == id)).FirstOrDefaultAsync();
 
-    /// <summary>
-    /// Asistan için: isimden müşteri bulur. Tam eşleşme varsa yalnızca onu döner;
-    /// yoksa firma veya yetkili adında geçen tüm kayıtları döner (birden fazlaysa kullanıcıya sorulur).
-    /// </summary>
+    // isimden müşteri bulcak.
+    // Tam eşleşme varsa  onu döncek ,yoksa firma veya yetkili adında geçen tüm kayıtlar
     public async Task<List<Customer>> FindMatchesAsync(string name)
     {
         var all = await _db.Customers.AsNoTracking().ToListAsync();
@@ -109,7 +103,7 @@ public class CustomerService
             c.Id, c.CompanyName, c.ContactName, c.Email, c.Phone, c.City, c.Status, c.CreatedAt,
             c.Activities.Count(a => !a.IsCompleted), c.Quotes.Count));
 
-    private static void Apply(Customer e, CustomerSaveDto dto)
+    private static void Apply(Customer e, CustomerSaveDto dto)       //dto mapper
     {
         e.CompanyName = dto.CompanyName.Trim();
         e.ContactName = Clean(dto.ContactName);

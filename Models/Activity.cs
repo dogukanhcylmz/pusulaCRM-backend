@@ -2,11 +2,11 @@ namespace DigitestCrm.Api.Models;
 
 public enum ActivityType
 {
-    Call,     // Telefon görüşmesi
-    Meeting,  // Toplantı
-    Email,    // E-posta
-    Task,     // Görev
-    Note      // Not (müşteri kartına düşülen bilgi)
+    Call,    
+    Meeting,  
+    Email,    
+    Task,     
+    Note      
 }
 
 public class Activity

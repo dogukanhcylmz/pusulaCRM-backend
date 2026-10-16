@@ -12,10 +12,7 @@ public class AppDbContext : DbContext
     public DbSet<Quote> Quotes => Set<Quote>();
     public DbSet<QuoteItem> QuoteItems => Set<QuoteItem>();
 
-    /// <summary>
-    /// Tüm tarihler veritabanında UTC saklanır; okunurken de UTC olarak işaretlenir.
-    /// Böylece arayüz saati kullanıcının yerel saatine doğru çevirir.
-    /// </summary>
+    /// Tüm tarihler veritabanında UTC saklanr
     protected override void ConfigureConventions(ModelConfigurationBuilder cb)
     {
         cb.Properties<DateTime>().HaveConversion<UtcDateTimeConverter>();

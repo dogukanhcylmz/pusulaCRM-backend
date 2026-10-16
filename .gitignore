@@ -1,15 +1,12 @@
-# Derleme çıktıları
 bin/
 obj/
 
-# Visual Studio / Rider / VS Code
 .vs/
 .idea/
 .vscode/
 *.user
 *.suo
 
-# Yerel veritabanı (SQLite)
 *.db
 *.db-shm
 *.db-wal
@@ -20,7 +17,6 @@ appsettings.Local.json
 secrets.json
 .env
 
-# Test / log çıktıları
 TestResults/
 *.log
 
@@ -29,6 +25,5 @@ CLAUDE.md
 .claude/
 docs/
 
-# İşletim sistemi
 Thumbs.db
 .DS_Store

@@ -2,9 +2,9 @@ namespace DigitestCrm.Api.Models;
 
 public enum CustomerStatus
 {
-    Lead,     // Potansiyel müşteri
-    Active,   // Aktif müşteri
-    Passive   // Pasif müşteri
+    Lead,     // Potansiel müsteri
+    Active,   
+    Passive   
 }
 
 public class Customer

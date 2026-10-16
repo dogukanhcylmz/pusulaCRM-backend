@@ -4,10 +4,8 @@ using DigitestCrm.Api.Models;
 
 namespace DigitestCrm.Api.Services.Ai;
 
-/// <summary>
-/// API anahtarı tanımlı değilse çalışan basit, kural tabanlı yedek asistan.
-/// Sunum sırasında internet ya da kota sorunu olsa bile chatbot boş kalmaz.
-/// </summary>
+//kural tabanlı yedek asistan. internetsiz çalışması için
+
 public class FallbackAssistant
 {
     private static readonly CultureInfo Tr = new("tr-TR");
@@ -66,7 +64,7 @@ public class FallbackAssistant
                    $"{d.OpenQuoteCount} açık teklif ({d.PipelineTotal.ToString("N2", Tr)} ₺).";
         }
 
-        return "Şu an basit modda çalışıyorum (yapay zeka anahtarı tanımlı değil). " +
+        return "Şu an basit modda çalışıyorum. " +
                "\"özet\", \"açık teklifler\", \"yaklaşan aktiviteler\" veya \"müşteriler\" yazabilirsiniz. " +
                "Kayıt oluşturma ve güncelleme için yapay zeka bağlantısı gerekir.";
     }

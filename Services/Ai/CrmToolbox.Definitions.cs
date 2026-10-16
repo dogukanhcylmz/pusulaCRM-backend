@@ -2,15 +2,12 @@
 
 namespace DigitestCrm.Api.Services.Ai;
 
-/// <summary>Modele gönderilen araç listesi (JSON Schema). Model hangi aracı çağıracağına bu açıklamalara bakarak karar verir.</summary>
+/// Modele gönderilen ai nin kullanabileci araç listesi JSON olarak döndürüyorum.
 public partial class CrmToolbox
 {
-    // =====================================================================
-    // Araç tanımları (JSON Schema). Model bu açıklamalara bakarak karar verir.
-    // =====================================================================
     public JsonArray Definitions { get; } = new()
     {
-        // ---------- Okuma ----------
+        // ---------- Okuma ----------6 arac
         Tool("search_customers", "Müşterileri firma adı, yetkili adı, şehir veya e-postaya göre arar. Sorgu boşsa tüm müşterileri listeler.",
             Props(("query", Str("Aranacak metin (isteğe bağlı)")),
                   ("status", Choice("Durum filtresi", "Lead", "Active", "Passive")))),
@@ -36,7 +33,7 @@ public partial class CrmToolbox
             Props(("from", Str("Başlangıç tarihi yyyy-MM-dd (boşsa tüm zamanlar)")),
                   ("to", Str("Bitiş tarihi yyyy-MM-dd (boşsa bugün)")))),
 
-        // ---------- Yazma (kullanıcı onayı gerekir) ----------
+        // ---------- Yazma --------- 7 araç yazıldı
         Tool("create_customer", "Yeni müşteri kaydı oluşturur. Kullanıcı onayından sonra çalışır.",
             Props(("companyName", Str("Firma adı")),
                   ("contactName", Str("Yetkili kişi")),
@@ -71,7 +68,7 @@ public partial class CrmToolbox
         Tool("delete_activity", "Bir aktiviteyi kalıcı olarak siler. Kullanıcı açıkça onaylamadan çalışmaz.",
             Props(("activityId", Int("Aktivite numarası"))),
             "activityId"),
-
+        //iç içe yapı  var teslim etmeden kontrol et !!!
         Tool("create_quote", "Bir müşteri için fiyat teklifi oluşturur. Fiyatlar TL ve KDV hariçtir. Kullanıcı onayından sonra çalışır.",
             Props(("customerName", Str("Müşteri firma adı veya yetkili adı")),
                   ("title", Str("Teklif başlığı")),
@@ -100,7 +97,6 @@ public partial class CrmToolbox
             "quoteNumber", "status"),
     };
 
-    // ---------- JSON Schema kısayolları ----------
     private static JsonObject Tool(string name, string description, JsonObject properties, params string[] required)
     {
         var parameters = new JsonObject { ["type"] = "object", ["properties"] = properties };

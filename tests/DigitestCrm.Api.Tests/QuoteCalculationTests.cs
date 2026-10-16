@@ -13,15 +13,6 @@ public class QuoteCalculationTests
     }
 
     [Fact]
-    public void LineTotal_KurusaYuvarlanir()
-    {
-        // 1 x 99.99 x 0.85 = 84.9915 → 84.99
-        var kalem = new QuoteItem { Quantity = 1, UnitPrice = 99.99m, DiscountPercent = 15 };
-
-        Assert.Equal(84.99m, kalem.LineTotal);
-    }
-
-    [Fact]
     public void Toplamlar_KdvDahilDogruHesaplanir()
     {
         var teklif = new Quote

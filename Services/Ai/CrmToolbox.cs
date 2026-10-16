@@ -4,16 +4,12 @@ using System.Text.Json.Serialization;
 
 namespace DigitestCrm.Api.Services.Ai;
 
-/// <summary>
-/// Asistanın kullanabildiği araçlar (function calling).
-///
-/// İki tür araç vardır:
-///  • Okuma araçları (search_*, list_*, get_*) hemen çalışır, sonucu modele döner.
-///  • Yazma araçları (create_*, update_*, complete_*, delete_*) HEMEN ÇALIŞMAZ.
-///    Önce doğrulanır ve kullanıcıya gösterilecek bir özet hazırlanır (PrepareWriteAsync).
-///    Kullanıcı "Onayla" derse ExecuteWriteAsync ile gerçekleştirilir.
-///    Böylece onay kuralı modelin "söz dinlemesine" değil, koda bağlıdır.
-/// </summary>
+/*
+   Okuma araçları sonucu hemen modele döner.
+   Yazma araçları 
+    Önce doğrulanır ve kullanıcıya özet hazırlr (PrepareWriteAsync).
+    Kullanıcı "Onayla" derse ExecuteWriteAsync 
+*/
 public partial class CrmToolbox
 {
     private static readonly CultureInfo Tr = new("tr-TR");
@@ -48,7 +44,7 @@ public partial class CrmToolbox
 
     public static bool IsWriteTool(string name) => WriteTools.Contains(name);
 
-    /// <summary>Yazma aracı için hazırlanan önizleme. Error doluysa işlem hazırlanamamıştır.</summary>
+    //Error doluysa işlem hazırlanamamış
     public record PreparedWrite(string? Error, string Title = "", string Summary = "", List<string>? Details = null,
                                 bool Danger = false, string PayloadJson = "");
 }

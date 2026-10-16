@@ -11,11 +11,7 @@ public class ChatController : ControllerBase
     private readonly ChatService _chat;
     public ChatController(ChatService chat) => _chat = chat;
 
-    /// <summary>
-    /// Sohbet geçmişini ve kullanıcının bulunduğu sayfayı alır; asistanın cevabını döner.
-    /// Cevap bir kayıt değişikliği öneriyorsa "pending" alanında onay kartı gelir.
-    /// Sunucu sohbet durumu tutmaz; geçmiş arayüzde saklanır.
-    /// </summary>
+
     [HttpPost]
     public async Task<ActionResult<ChatResponseDto>> Post(ChatRequestDto request, CancellationToken ct)
     {
@@ -25,11 +21,10 @@ public class ChatController : ControllerBase
         return await _chat.SendAsync(request, ct);
     }
 
-    /// <summary>Kullanıcı onay kartında "Onayla" dedi.</summary>
+    /// onay kartı onaylandı
     [HttpPost("actions/{id}/confirm")]
     public Task<ConfirmResultDto> Confirm(string id) => _chat.ConfirmAsync(id);
 
-    /// <summary>Kullanıcı onay kartında "Vazgeç" dedi.</summary>
     [HttpPost("actions/{id}/cancel")]
     public ConfirmResultDto Cancel(string id) => _chat.Cancel(id);
 }

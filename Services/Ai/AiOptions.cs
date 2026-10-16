@@ -1,10 +1,5 @@
 namespace DigitestCrm.Api.Services.Ai;
 
-/// <summary>
-/// appsettings.json → "Ai": hangi yapay zeka servisine bağlanılacağı.
-/// OpenAI uyumlu her servis çalışır: OpenRouter (ücretsiz ":free" modeller), Google Gemini, Groq, OpenAI...
-/// Model araç çağırmayı (tools) desteklemelidir; aksi halde asistan kayıt işlemleri yapamaz.
-/// </summary>
 public class AiOptions
 {
     public const string Section = "Ai";
@@ -13,20 +8,15 @@ public class AiOptions
     public string BaseUrl { get; set; } = "https://openrouter.ai/api/v1/";
     public string Model { get; set; } = "nvidia/nemotron-3-super-120b-a12b:free";
 
-    /// <summary>
-    /// Yedek modeller (sırayla denenir). Asıl model dolu/hatalıysa sıradakine geçilir.
-    /// Sunum sırasında appsettings.json'a eklenip çıkarılabilir; uygulamayı yeniden başlatmak gerekmez.
-    /// </summary>
+    /// Yedek modeller appsteings e koydum
     public List<string> FallbackModels { get; set; } = new();
 
-    /// <summary>Hata veren bir model kaç saniye boyunca atlanır.</summary>
     public int CooldownSeconds { get; set; } = 90;
 
     public string? ApiKey { get; set; }
 
     public bool IsConfigured => !string.IsNullOrWhiteSpace(ApiKey);
 
-    /// <summary>Denenecek modellerin sırası: önce Model, sonra FallbackModels (tekrarsız).</summary>
     public IEnumerable<string> ModelChain =>
         new[] { Model }.Concat(FallbackModels)
             .Where(m => !string.IsNullOrWhiteSpace(m))
@@ -34,10 +24,7 @@ public class AiOptions
             .Distinct(StringComparer.OrdinalIgnoreCase);
 }
 
-/// <summary>
-/// appsettings.json → "Assistant": sistem promptundaki yer tutucuların değerleri.
-/// Giriş sistemi eklendiğinde kullanıcı bilgileri oturumdaki kullanıcıdan alınır.
-/// </summary>
+
 public class AssistantOptions
 {
     public const string Section = "Assistant";
@@ -50,7 +37,7 @@ public class AssistantOptions
     public string UserTeam { get; set; } = "Kurumsal Satış";
 }
 
-/// <summary>Kullanıcının yerel saati ile UTC arasında çeviri.</summary>
+/// Kullanıcının yerel saati ile UTC arasında çeviri
 public class LocalClock
 {
     private readonly TimeZoneInfo _tz;
@@ -69,7 +56,6 @@ public class LocalClock
     public DateTime ToLocal(DateTime utc) =>
         TimeZoneInfo.ConvertTimeFromUtc(DateTime.SpecifyKind(utc, DateTimeKind.Utc), _tz);
 
-    /// <summary>Kullanıcıya gösterilecek biçim: GG.AA.YYYY SS:DD</summary>
     public string Format(DateTime? utc, bool withTime = true) =>
         utc is null ? "tarihsiz" : ToLocal(utc.Value).ToString(withTime ? "dd.MM.yyyy HH:mm" : "dd.MM.yyyy");
 }

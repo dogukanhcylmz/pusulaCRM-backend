@@ -2,13 +2,10 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace DigitestCrm.Api.Services.Ai;
 
-/// <summary>Asistanın hazırladığı ama henüz kullanıcı onayı almamış işlem.</summary>
 public record PendingAction(string Id, string Tool, string PayloadJson, string Title, string Summary, List<string> Details, bool Danger);
 
-/// <summary>
-/// Onay bekleyen işlemleri 15 dakika bellekte tutar. Her işlem tek kullanımlıktır:
-/// onaylanınca ya da iptal edilince silinir, süresi dolunca kendiliğinden düşer.
-/// </summary>
+// Onay bekleyen  15 dakika bellekte 
+// onaylanınca silinir, süresi dolunca  düşer.
 public class PendingActionStore
 {
     private static readonly TimeSpan Lifetime = TimeSpan.FromMinutes(15);
@@ -23,7 +20,7 @@ public class PendingActionStore
         return action;
     }
 
-    /// <summary>İşlemi alır ve depodan siler (aynı işlem iki kez çalıştırılamaz).</summary>
+    //İşlemi al ve depodan silcek aynı işlem iki kez çalıştırılamaz
     public PendingAction? Take(string id)
     {
         if (!_cache.TryGetValue(Key(id), out PendingAction? action)) return null;

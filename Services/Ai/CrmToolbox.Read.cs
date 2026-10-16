@@ -3,12 +3,8 @@ using DigitestCrm.Api.Models;
 
 namespace DigitestCrm.Api.Services.Ai;
 
-/// <summary>Okuma araçları: hemen çalışır, sonucu modele döner.</summary>
 public partial class CrmToolbox
 {
-    // =====================================================================
-    // OKUMA ARAÇLARI
-    // =====================================================================
     public async Task<string> ExecuteReadAsync(string name, string? argumentsJson)
     {
         try
@@ -82,7 +78,7 @@ public partial class CrmToolbox
         bool? completed = GetBool(a, "onlyOpen") == true ? false : null;
         var list = await _activities.GetAllAsync(customerId, completed);
 
-        // Tarih aralığı yerel güne göre uygulanır
+        // Tarih aralığı yerel gün
         var fromDay = ParseDay(GetString(a, "from"));
         var toDay = ParseDay(GetString(a, "to"));
         if (fromDay.HasValue || toDay.HasValue)

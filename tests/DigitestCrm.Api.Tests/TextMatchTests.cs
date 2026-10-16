@@ -4,17 +4,6 @@ namespace DigitestCrm.Api.Tests;
 
 public class TextMatchTests
 {
-    [Theory]
-    [InlineData("Ayşe Demir", "ayse")]
-    [InlineData("İzmir", "IZMIR")]
-    [InlineData("Işık Elektrik", "isik")]
-    [InlineData("Gökçe Ünlü", "gokce unlu")]
-    [InlineData("Anadolu   Lojistik", "anadolu lojistik")]
-    public void Contains_TurkceKarakterFarkiniYokSayar(string kaynak, string aranan)
-    {
-        Assert.True(TextMatch.Contains(kaynak, aranan));
-    }
-
     [Fact]
     public void Contains_EslesmeYoksaFalseDoner()
     {

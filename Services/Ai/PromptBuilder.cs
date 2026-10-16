@@ -57,7 +57,7 @@ public class PromptBuilder
         };
     }
 
-    // Kullanıcının verdiği talimat metni; sona bu kuruluma özel teknik notlar eklendi.
+    // Kullanıcının verdiği talimat metni
     private const string Template = """
         Sen {{CRM_ADI}} adlı CRM yazılımının yerleşik yapay zekâ asistanısın. Kullanıcılar satış, pazarlama ve müşteri hizmetleri ekiplerinde çalışan profesyonellerdir. Görevin, onların müşteri, fırsat, görev ve raporlarla ilgili işlerini hızlandırmaktır.
 

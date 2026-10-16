@@ -2,7 +2,7 @@
 
 namespace DigitestCrm.Api.Services.Ai;
 
-/// <summary>Enum değerlerinin Türkçe karşılıkları.</summary>
+//Enum  Türkçe karşılıkları
 public static class Labels
 {
     public static string Customer(CustomerStatus s) => s switch

@@ -7,17 +7,9 @@ using DigitestCrm.Api.Models;
 
 namespace DigitestCrm.Api.Services.Ai;
 
-/// <summary>Ortak yardımcılar: müşteri çözümleme, doğrulama, tarih/sayı ayrıştırma, JSON.</summary>
 public partial class CrmToolbox
 {
-    // =====================================================================
-    // Yardımcılar
-    // =====================================================================
-
-    /// <summary>
-    /// İsimden tek bir müşteri bulur. Bulamazsa veya birden fazla eşleşme varsa
-    /// modele açıklayıcı bir hata döner; model de kullanıcıya sorar.
-    /// </summary>
+    //birden fazla eşleşme varsa kullanıcıya sor
     private async Task<Customer> ResolveCustomer(string? name)
     {
         if (string.IsNullOrWhiteSpace(name))

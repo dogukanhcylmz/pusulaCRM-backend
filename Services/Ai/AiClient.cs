@@ -6,10 +6,7 @@ using Microsoft.Extensions.Options;
 
 namespace DigitestCrm.Api.Services.Ai;
 
-/// <summary>
-/// Hata veren modelleri geçici olarak "dinlendirir"; böylece dolu bir model her istekte yeniden denenip
-/// kullanıcı bekletilmez. Tüm istekler için ortaktır (singleton).
-/// </summary>
+// Hata veren modelleri geçici olarak bekletip tekrar tekrar deneme
 public class ModelHealth
 {
     private readonly ConcurrentDictionary<string, DateTime> _coolUntil = new(StringComparer.OrdinalIgnoreCase);
@@ -22,16 +19,10 @@ public class ModelHealth
     public void MarkHealthy(string model) => _coolUntil.TryRemove(model, out _);
 }
 
-/// <summary>
-/// OpenAI uyumlu "chat/completions" uç noktasına istek atan ince istemci.
-/// Bir SDK'ya bağımlı değil; böylece OpenRouter, Gemini, Groq ya da OpenAI arasında
-/// sadece ayar değiştirerek geçiş yapılabilir.
-/// Model dolu (429), bulunamadı (404) ya da sunucu hatası (5xx) verirse yedek modele geçer.
-/// </summary>
 public class AiClient
 {
     private readonly HttpClient _http;
-    private readonly IOptionsMonitor<AiOptions> _options;   // appsettings.json değişince canlı güncellenir
+    private readonly IOptionsMonitor<AiOptions> _options;   // appsettings.json bsğlı
     private readonly ModelHealth _health;
     private readonly ILogger<AiClient> _logger;
 
@@ -44,13 +35,12 @@ public class AiClient
         _http.Timeout = TimeSpan.FromSeconds(60);
     }
 
-    /// <summary>Modelden bir yanıt mesajı döner (metin ya da tool_calls içerebilir).</summary>
+    //Modelden yanıt mesajı döner metin ya da tool_calls içereir
     public async Task<JsonObject> CompleteAsync(JsonArray messages, JsonArray tools, CancellationToken ct = default)
     {
         var options = _options.CurrentValue;
         var chain = options.ModelChain.ToList();
 
-        // Dinlenen modelleri atla; hepsi dinleniyorsa yine de hepsini dene (bekletmekten iyidir).
         var candidates = chain.Where(m => !_health.IsCooling(m)).ToList();
         if (candidates.Count == 0) candidates = chain;
 
@@ -81,8 +71,7 @@ public class AiClient
         throw last ?? new AiServiceException(503);
     }
 
-    // 401/403 anahtar sorunudur: modeli değiştirmek çözmez, hemen bildirilir.
-    // 429 dolu, 404 yanlış/kalkmış model, 400 çoğu zaman modelin araç desteklememesi, 5xx servis hatası.
+    // 401-3 key sorunu, 429 dolu, 404 kalkmış model, 400 model araç desteklememesi, 500 servis hatası.
     private static bool CanTryNext(int status) => status is 400 or 404 or 408 or 429 or >= 500;
 
     private async Task<JsonObject> CallAsync(AiOptions options, string model, JsonArray messages, JsonArray tools, CancellationToken ct)
@@ -101,9 +90,8 @@ public class AiClient
         {
             Content = new StringContent(body.ToJsonString(), Encoding.UTF8, "application/json")
         };
-        // Ortam değişkenine yapıştırılan anahtarın sonunda satır sonu/boşluk kalabiliyor; başlık bunu kabul etmez.
         try { request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", options.ApiKey?.Trim()); }
-        catch (FormatException) { throw new AiServiceException(401); }   // anahtar geçersiz → kullanıcıya anlamlı mesaj
+        catch (FormatException) { throw new AiServiceException(401); }  
 
         using var response = await _http.SendAsync(request, ct);
         var text = await response.Content.ReadAsStringAsync(ct);
@@ -116,7 +104,6 @@ public class AiClient
 
         var json = JsonNode.Parse(text);
 
-        // OpenRouter bazen HTTP 200 ile {"error": {...}} döner (sağlayıcı hatası).
         if (json?["error"] is JsonNode err)
         {
             var code = (int?)err["code"] ?? 502;

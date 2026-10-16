@@ -3,10 +3,8 @@ using DigitestCrm.Api.Models;
 
 namespace DigitestCrm.Api.Dtos;
 
-// ---------- Ortak ----------
 public record PagedResult<T>(List<T> Items, int Page, int PageSize, int TotalCount, int TotalPages);
 
-// ---------- Müşteri ----------
 public record CustomerDto(
     int Id, string CompanyName, string? ContactName, string? Email, string? Phone,
     string? City, CustomerStatus Status, DateTime CreatedAt, int OpenActivityCount, int QuoteCount);
@@ -22,7 +20,6 @@ public class CustomerSaveDto
     public CustomerStatus Status { get; set; } = CustomerStatus.Lead;
 }
 
-// ---------- Aktivite ----------
 public record ActivityDto(
     int Id, int CustomerId, string CustomerName, ActivityType Type, string Subject,
     string? Notes, DateTime? DueDate, bool IsCompleted, DateTime CreatedAt);
@@ -38,7 +35,6 @@ public class ActivitySaveDto
     public DateTime? DueDate { get; set; }
 }
 
-/// <summary>Aktivite düzenleme. Müşteri ve tamamlanma durumu bu yolla değişmez.</summary>
 public class ActivityUpdateDto
 {
     public ActivityType Type { get; set; } = ActivityType.Task;
@@ -48,7 +44,6 @@ public class ActivityUpdateDto
     public DateTime? DueDate { get; set; }
 }
 
-// ---------- Teklif ----------
 public record QuoteItemDto(int Id, string Description, decimal Quantity, decimal UnitPrice, decimal DiscountPercent, decimal LineTotal);
 
 public record QuoteDto(
@@ -76,7 +71,6 @@ public class QuoteSaveDto
     public List<QuoteItemSaveDto> Items { get; set; } = new();
 }
 
-/// <summary>Teklif düzenleme. Müşteri, numara ve durum bu yolla değişmez.</summary>
 public class QuoteUpdateDto
 {
     [Required(ErrorMessage = "Başlık zorunludur."), MaxLength(200)]
@@ -89,21 +83,18 @@ public class QuoteUpdateDto
 
 public record QuoteStatusDto(QuoteStatus Status);
 
-// ---------- Dashboard ----------
 public record DashboardDto(
     int CustomerCount, int LeadCount, int OpenActivityCount, int OpenQuoteCount,
     decimal PipelineTotal, decimal WonTotal,
     List<ActivityDto> UpcomingActivities, List<QuoteDto> RecentQuotes);
 
-// ---------- Asistan ----------
 public record ChatMessageDto(string Role, string Content);
 
-/// <summary>Kullanıcının o an bulunduğu sayfa. Adlar sunucuda id'den çözülür; istemciye güvenilmez.</summary>
 public record ChatPageContextDto(string? Page, int? CustomerId, int? QuoteId);
 
 public record ChatRequestDto(List<ChatMessageDto> Messages, ChatPageContextDto? Context);
 
-/// <summary>Onay bekleyen işlem: kullanıcı "Onayla" demeden veritabanına yazılmaz.</summary>
+///onayla denmesini beklesin
 public record PendingActionDto(string Id, string Title, string Summary, List<string> Details, bool Danger);
 
 public record ChatResponseDto(string Reply, List<string> Actions, bool AiEnabled, PendingActionDto? Pending = null);

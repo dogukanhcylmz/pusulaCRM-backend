@@ -5,10 +5,6 @@ using DigitestCrm.Api.Services.Ai;
 
 namespace DigitestCrm.Api.Controllers;
 
-/// <summary>
-/// Oturumdaki kullanıcı. Şimdilik ayarlardan gelir;
-/// giriş sistemi eklendiğinde JWT içindeki bilgilerden okunacak.
-/// </summary>
 [ApiController]
 [Route("api/me")]
 public class MeController : ControllerBase

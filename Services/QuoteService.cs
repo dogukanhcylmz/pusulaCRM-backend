@@ -8,7 +8,7 @@ namespace DigitestCrm.Api.Services;
 
 public class QuoteService
 {
-    /// <summary>Teklif numarası üretimi için PostgreSQL advisory lock anahtarı (uygulama genelinde sabit, rastgele seçildi).</summary>
+    //Teklif numarası üretimi için trancastion -> PostgreSQL advisory lock anahtarı 
     private const long QuoteNumberLockKey = 7_301_542_001;
 
     private readonly AppDbContext _db;
@@ -37,8 +37,7 @@ public class QuoteService
         if (dto.Items.Count == 0)
             throw new ArgumentException("Teklifte en az bir kalem olmalıdır.");
 
-        // Numara üretimi + kayıt kilit altında sırayla yapılır; eşzamanlı isteklerde aynı numara verilmez (B4).
-        // Kilit transaction bitince (commit/rollback) kendiliğinden bırakılır.
+        // Numara üretimi + kayıt kilit altında sırayla yapılcak eşzamanlı isteklerde kitşe
         await using var tx = await _db.Database.BeginTransactionAsync();
         await _db.Database.ExecuteSqlRawAsync("SELECT pg_advisory_xact_lock({0})", QuoteNumberLockKey);
 
@@ -64,11 +63,8 @@ public class QuoteService
         return (await GetAsync(entity.Id))!;
     }
 
-    /// <summary>
-    /// Başlık, KDV oranı, geçerlilik ve kalemleri günceller. Kalemlerin tamamı yenileriyle değiştirilir;
-    /// toplamlar hesaplanan alanlar olduğu için kendiliğinden güncellenir.
-    /// Sonuçlanmış (kabul/red) teklif düzenlenemez.
-    /// </summary>
+   
+    // Başlık, KDV oranı, geçerlilik ve kalemleri güncelleme için
     public async Task<QuoteDto?> UpdateAsync(int id, QuoteUpdateDto dto)
     {
         var entity = await _db.Quotes.Include(q => q.Items).FirstOrDefaultAsync(q => q.Id == id);
@@ -113,19 +109,14 @@ public class QuoteService
         return true;
     }
 
-    /// <summary>
-    /// Açık fırsat: Taslak veya Gönderildi durumunda ve geçerliliği dolmamış teklif.
-    /// Geçerlilik tarihinin son günü (yerel saatle) dahildir. Dashboard ve asistan bu kuralı ortak kullanır.
-    /// </summary>
+    //geçerliliği dolmamış teklif bolean
     public static bool IsOpen(QuoteDto q, LocalClock clock) =>
         q.Status is QuoteStatus.Draft or QuoteStatus.Sent && !IsExpired(q, clock);
 
-    /// <summary>Geçerlilik günü geride kalmış mı (yerel saate göre).</summary>
     public static bool IsExpired(QuoteDto q, LocalClock clock) =>
         clock.ToLocal(q.ValidUntil).Date < clock.Now.Date;
 
-    /// <summary>TKL-2026-0001 biçiminde yılın bir sonraki teklif numarası.</summary>
-    private async Task<string> NextNumberAsync()
+    private async Task<string> NextNumberAsync() //teklid no maker
     {
         var prefix = $"TKL-{DateTime.UtcNow.Year}-";
         var numbers = await _db.Quotes
