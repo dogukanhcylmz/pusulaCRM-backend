@@ -46,6 +46,30 @@ public class ActivityService
         return (await GetAsync(entity.Id))!;
     }
 
+    /// <summary>
+    /// Tür, konu, açıklama ve tarihi günceller. Not ile iş türleri (arama, toplantı, e-posta, görev)
+    /// birbirine çevrilemez; notun tarihi tutulmaz. Tamamlanma durumu SetCompletedAsync ile değişir.
+    /// </summary>
+    public async Task<ActivityDto?> UpdateAsync(int id, ActivityUpdateDto dto)
+    {
+        var entity = await _db.Activities.FindAsync(id);
+        if (entity is null) return null;
+
+        var wasNote = entity.Type == ActivityType.Note;
+        var isNote = dto.Type == ActivityType.Note;
+        if (wasNote != isNote)
+            throw new ArgumentException(wasNote
+                ? "Not başka bir aktivite türüne çevrilemez."
+                : "Aktivite nota çevrilemez.");
+
+        entity.Type = dto.Type;
+        entity.Subject = dto.Subject.Trim();
+        entity.Notes = string.IsNullOrWhiteSpace(dto.Notes) ? null : dto.Notes.Trim();
+        entity.DueDate = isNote ? null : dto.DueDate;
+        await _db.SaveChangesAsync();
+        return await GetAsync(id);
+    }
+
     public async Task<ActivityDto?> SetCompletedAsync(int id, bool completed)
     {
         var entity = await _db.Activities.FindAsync(id);

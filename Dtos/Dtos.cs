@@ -35,6 +35,16 @@ public class ActivitySaveDto
     public DateTime? DueDate { get; set; }
 }
 
+/// <summary>Aktivite düzenleme. Müşteri ve tamamlanma durumu bu yolla değişmez.</summary>
+public class ActivityUpdateDto
+{
+    public ActivityType Type { get; set; } = ActivityType.Task;
+    [Required(ErrorMessage = "Konu zorunludur."), MaxLength(300)]
+    public string Subject { get; set; } = string.Empty;
+    public string? Notes { get; set; }
+    public DateTime? DueDate { get; set; }
+}
+
 // ---------- Teklif ----------
 public record QuoteItemDto(int Id, string Description, decimal Quantity, decimal UnitPrice, decimal DiscountPercent, decimal LineTotal);
 

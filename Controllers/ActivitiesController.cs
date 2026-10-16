@@ -19,6 +19,10 @@ public class ActivitiesController : ControllerBase
     public async Task<ActionResult<ActivityDto>> Create(ActivitySaveDto dto) =>
         Created($"api/activities", await _service.CreateAsync(dto));
 
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<ActivityDto>> Update(int id, ActivityUpdateDto dto) =>
+        await _service.UpdateAsync(id, dto) is { } a ? a : NotFound();
+
     [HttpPatch("{id:int}/complete")]
     public async Task<ActionResult<ActivityDto>> Complete(int id, [FromQuery] bool value = true) =>
         await _service.SetCompletedAsync(id, value) is { } a ? a : NotFound();
