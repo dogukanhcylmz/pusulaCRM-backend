@@ -38,8 +38,12 @@ builder.Services.AddControllers()
 builder.Services.AddProblemDetails();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+// İzin verilen arayüz adresleri: Cors:Origins (canlıda ortam değişkeni Cors__Origins__0, Cors__Origins__1...)
+var corsOrigins = builder.Configuration.GetSection("Cors:Origins").Get<string[]>() is { Length: > 0 } origins
+    ? origins
+    : new[] { "http://localhost:5173" };
 builder.Services.AddCors(o => o.AddDefaultPolicy(p =>
-    p.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod()));
+    p.WithOrigins(corsOrigins).AllowAnyHeader().AllowAnyMethod()));
 
 var app = builder.Build();
 
