@@ -27,6 +27,10 @@ public class QuotesController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
     }
 
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<QuoteDto>> Update(int id, QuoteUpdateDto dto) =>
+        await _service.UpdateAsync(id, dto) is { } q ? q : NotFound();
+
     [HttpPatch("{id:int}/status")]
     public async Task<ActionResult<QuoteDto>> UpdateStatus(int id, QuoteStatusDto dto) =>
         await _service.UpdateStatusAsync(id, dto.Status) is { } q ? q : NotFound();

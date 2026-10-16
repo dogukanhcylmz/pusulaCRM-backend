@@ -63,6 +63,17 @@ public class QuoteSaveDto
     public List<QuoteItemSaveDto> Items { get; set; } = new();
 }
 
+/// <summary>Teklif düzenleme. Müşteri, numara ve durum bu yolla değişmez.</summary>
+public class QuoteUpdateDto
+{
+    [Required(ErrorMessage = "Başlık zorunludur."), MaxLength(200)]
+    public string Title { get; set; } = string.Empty;
+    [Range(0, 100)] public decimal TaxRate { get; set; } = 20;
+    public DateTime? ValidUntil { get; set; }
+    [MinLength(1, ErrorMessage = "En az bir kalem eklenmelidir.")]
+    public List<QuoteItemSaveDto> Items { get; set; } = new();
+}
+
 public record QuoteStatusDto(QuoteStatus Status);
 
 // ---------- Dashboard ----------

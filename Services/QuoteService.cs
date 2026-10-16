@@ -8,6 +8,9 @@ namespace DigitestCrm.Api.Services;
 
 public class QuoteService
 {
+    /// <summary>Teklif numarası üretimi için PostgreSQL advisory lock anahtarı (uygulama genelinde sabit, rastgele seçildi).</summary>
+    private const long QuoteNumberLockKey = 7_301_542_001;
+
     private readonly AppDbContext _db;
     public QuoteService(AppDbContext db) => _db = db;
 
@@ -34,6 +37,11 @@ public class QuoteService
         if (dto.Items.Count == 0)
             throw new ArgumentException("Teklifte en az bir kalem olmalıdır.");
 
+        // Numara üretimi + kayıt kilit altında sırayla yapılır; eşzamanlı isteklerde aynı numara verilmez (B4).
+        // Kilit transaction bitince (commit/rollback) kendiliğinden bırakılır.
+        await using var tx = await _db.Database.BeginTransactionAsync();
+        await _db.Database.ExecuteSqlRawAsync("SELECT pg_advisory_xact_lock({0})", QuoteNumberLockKey);
+
         var entity = new Quote
         {
             QuoteNumber = await NextNumberAsync(),
@@ -52,7 +60,39 @@ public class QuoteService
 
         _db.Quotes.Add(entity);
         await _db.SaveChangesAsync();
+        await tx.CommitAsync();
         return (await GetAsync(entity.Id))!;
+    }
+
+    /// <summary>
+    /// Başlık, KDV oranı, geçerlilik ve kalemleri günceller. Kalemlerin tamamı yenileriyle değiştirilir;
+    /// toplamlar hesaplanan alanlar olduğu için kendiliğinden güncellenir.
+    /// Sonuçlanmış (kabul/red) teklif düzenlenemez.
+    /// </summary>
+    public async Task<QuoteDto?> UpdateAsync(int id, QuoteUpdateDto dto)
+    {
+        var entity = await _db.Quotes.Include(q => q.Items).FirstOrDefaultAsync(q => q.Id == id);
+        if (entity is null) return null;
+        if (entity.Status is QuoteStatus.Accepted or QuoteStatus.Rejected)
+            throw new ArgumentException("Kabul edilmiş veya reddedilmiş teklif düzenlenemez.");
+        if (dto.Items.Count == 0)
+            throw new ArgumentException("Teklifte en az bir kalem olmalıdır.");
+
+        entity.Title = dto.Title.Trim();
+        entity.TaxRate = dto.TaxRate;
+        if (dto.ValidUntil.HasValue) entity.ValidUntil = dto.ValidUntil.Value;
+
+        _db.QuoteItems.RemoveRange(entity.Items);
+        entity.Items = dto.Items.Select(i => new QuoteItem
+        {
+            Description = i.Description.Trim(),
+            Quantity = i.Quantity,
+            UnitPrice = i.UnitPrice,
+            DiscountPercent = i.DiscountPercent
+        }).ToList();
+
+        await _db.SaveChangesAsync();
+        return await GetAsync(id);
     }
 
     public async Task<QuoteDto?> UpdateStatusAsync(int id, QuoteStatus status)
