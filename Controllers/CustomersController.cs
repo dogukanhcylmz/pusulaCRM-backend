@@ -16,6 +16,11 @@ public class CustomersController : ControllerBase
     public Task<List<CustomerDto>> GetAll([FromQuery] string? search, [FromQuery] CustomerStatus? status) =>
         _service.GetAllAsync(search, status);
 
+    [HttpGet("paged")]
+    public Task<PagedResult<CustomerDto>> GetPaged([FromQuery] string? search, [FromQuery] CustomerStatus? status,
+        [FromQuery] int page = 1, [FromQuery] int pageSize = 10) =>
+        _service.GetPagedAsync(search, status, page, pageSize);
+
     [HttpGet("{id:int}")]
     public async Task<ActionResult<CustomerDto>> Get(int id) =>
         await _service.GetAsync(id) is { } c ? c : NotFound();

@@ -3,6 +3,9 @@ using DigitestCrm.Api.Models;
 
 namespace DigitestCrm.Api.Dtos;
 
+// ---------- Ortak ----------
+public record PagedResult<T>(List<T> Items, int Page, int PageSize, int TotalCount, int TotalPages);
+
 // ---------- Müşteri ----------
 public record CustomerDto(
     int Id, string CompanyName, string? ContactName, string? Email, string? Phone,

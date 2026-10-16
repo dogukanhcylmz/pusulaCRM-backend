@@ -28,6 +28,36 @@ public class CustomerService
         return list;
     }
 
+    /// <summary>Müşteri listesini sayfa sayfa döner. Arama yoksa sayfalama veritabanında yapılır.</summary>
+    public async Task<PagedResult<CustomerDto>> GetPagedAsync(string? search, CustomerStatus? status, int page, int pageSize)
+    {
+        if (page < 1) throw new ArgumentException("Sayfa numarası 1 veya daha büyük olmalıdır.");
+        if (pageSize < 1 || pageSize > 100) throw new ArgumentException("Sayfa boyutu 1 ile 100 arasında olmalıdır.");
+
+        List<CustomerDto> items;
+        int total;
+
+        if (string.IsNullOrWhiteSpace(search))
+        {
+            var query = _db.Customers.AsNoTracking().AsQueryable();
+            if (status.HasValue) query = query.Where(c => c.Status == status);
+
+            total = await query.CountAsync();
+            items = await Project(query.OrderByDescending(c => c.CreatedAt).ThenByDescending(c => c.Id)
+                                       .Skip((page - 1) * pageSize).Take(pageSize)).ToListAsync();
+        }
+        else
+        {
+            // Türkçe karakter duyarlı arama bellekte yapıldığı için sayfalama da bellekte yapılır.
+            var all = await GetAllAsync(search, status);
+            total = all.Count;
+            items = all.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        }
+
+        var totalPages = (int)Math.Ceiling(total / (double)pageSize);
+        return new PagedResult<CustomerDto>(items, page, pageSize, total, totalPages);
+    }
+
     public Task<CustomerDto?> GetAsync(int id) =>
         Project(_db.Customers.AsNoTracking().Where(c => c.Id == id)).FirstOrDefaultAsync();
 
