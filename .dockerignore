@@ -7,7 +7,6 @@ docs/
 .vs/
 .vscode/
 .idea/
-.claude/
 .config/
 *.db
 *.db-shm
@@ -17,5 +16,4 @@ appsettings.Development.json
 appsettings.Local.json
 secrets.json
 .env
-CLAUDE.md
 docker-compose.yml
