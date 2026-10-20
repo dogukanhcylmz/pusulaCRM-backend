@@ -15,12 +15,18 @@
     <None Include="tests\**" Exclude="tests\**\bin\**;tests\**\obj\**" />
   </ItemGroup>
 
+  <!-- Teklif PDF'indeki logo; dll içine gömülür, Docker'da ayrı dosya gerekmez -->
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\logo_digitest.png" LogicalName="DigitestCrm.Api.Assets.logo_digitest.png" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
+    <PackageReference Include="QuestPDF" Version="2026.9.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
   </ItemGroup>
 

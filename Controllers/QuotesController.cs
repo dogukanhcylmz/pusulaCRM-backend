@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using DigitestCrm.Api.Dtos;
 using DigitestCrm.Api.Models;
 using DigitestCrm.Api.Services;
+using DigitestCrm.Api.Services.Pdf;
 
 namespace DigitestCrm.Api.Controllers;
 
@@ -10,7 +11,13 @@ namespace DigitestCrm.Api.Controllers;
 public class QuotesController : ControllerBase
 {
     private readonly QuoteService _service;
-    public QuotesController(QuoteService service) => _service = service;
+    private readonly QuotePdfService _pdf;
+
+    public QuotesController(QuoteService service, QuotePdfService pdf)
+    {
+        _service = service;
+        _pdf = pdf;
+    }
 
     [HttpGet]
     public Task<List<QuoteDto>> GetAll([FromQuery] int? customerId, [FromQuery] QuoteStatus? status) =>
@@ -19,6 +26,11 @@ public class QuotesController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<ActionResult<QuoteDto>> Get(int id) =>
         await _service.GetAsync(id) is { } q ? q : NotFound();
+
+    // pDF'i indirme
+    [HttpGet("{id:int}/pdf")]
+    public async Task<IActionResult> Pdf(int id) =>
+        await _pdf.CreateAsync(id) is { } pdf ? File(pdf.Content, "application/pdf", pdf.FileName) : NotFound();
 
     [HttpPost]
     public async Task<ActionResult<QuoteDto>> Create(QuoteSaveDto dto)

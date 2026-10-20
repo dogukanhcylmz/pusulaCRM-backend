@@ -5,6 +5,10 @@ using Microsoft.Extensions.Options;
 using DigitestCrm.Api.Data;
 using DigitestCrm.Api.Services;
 using DigitestCrm.Api.Services.Ai;
+using DigitestCrm.Api.Services.Pdf;
+
+// QuestPDF topluluk lisansı (yıllık ciro 1M USD altı ücretsiz)
+QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +20,8 @@ builder.Services.AddScoped<CustomerService>();
 builder.Services.AddScoped<ActivityService>();
 builder.Services.AddScoped<QuoteService>();
 builder.Services.AddScoped<DashboardService>();
+builder.Services.AddScoped<QuotePdfService>();
+builder.Services.Configure<CompanyOptions>(builder.Configuration.GetSection(CompanyOptions.Section));
 
 builder.Services.Configure<AiOptions>(builder.Configuration.GetSection(AiOptions.Section));
 builder.Services.Configure<AssistantOptions>(builder.Configuration.GetSection(AssistantOptions.Section));
