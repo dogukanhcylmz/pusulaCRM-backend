@@ -100,15 +100,20 @@ public class CustomerService
 
     private static IQueryable<CustomerDto> Project(IQueryable<Customer> q) =>
         q.Select(c => new CustomerDto(
-            c.Id, c.CompanyName, c.ContactName, c.Email, c.Phone, c.City, c.Status, c.CreatedAt,
+            c.Id, c.CompanyName, c.ContactName, c.ContactTitle, c.Email, c.Phone,
+            c.Landline, c.Website, c.Address, c.City, c.Status, c.CreatedAt,
             c.Activities.Count(a => !a.IsCompleted), c.Quotes.Count));
 
     private static void Apply(Customer e, CustomerSaveDto dto)       //dto mapper
     {
         e.CompanyName = dto.CompanyName.Trim();
         e.ContactName = Clean(dto.ContactName);
+        e.ContactTitle = Clean(dto.ContactTitle);
         e.Email = Clean(dto.Email);
         e.Phone = Clean(dto.Phone);
+        e.Landline = Clean(dto.Landline);
+        e.Website = Clean(dto.Website);
+        e.Address = Clean(dto.Address);
         e.City = Clean(dto.City);
         e.Status = dto.Status;
     }

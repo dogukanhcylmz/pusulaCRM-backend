@@ -38,7 +38,7 @@ public partial class CrmToolbox
             count = list.Count,
             customers = list.Take(25).Select(c => new
             {
-                c.Id, c.CompanyName, c.ContactName, c.City, c.Email, c.Phone,
+                c.Id, c.CompanyName, c.ContactName, c.ContactTitle, c.City, c.Email, c.Phone, c.Landline,
                 durum = Labels.Customer(c.Status), acikIsSayisi = c.OpenActivityCount, teklifSayisi = c.QuoteCount
             })
         });
@@ -55,7 +55,8 @@ public partial class CrmToolbox
         {
             musteri = new
             {
-                c.Id, c.CompanyName, c.ContactName, c.Email, c.Phone, c.City,
+                c.Id, c.CompanyName, c.ContactName, c.ContactTitle, c.Email, c.Phone, c.Landline,
+                c.Website, c.Address, c.City,
                 durum = Labels.Customer(c.Status), kayitTarihi = _clock.Format(c.CreatedAt, false)
             },
             aktiviteler = activities.Take(30).Select(x => new

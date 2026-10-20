@@ -16,4 +16,6 @@ appsettings.Development.json
 appsettings.Local.json
 secrets.json
 .env
+CLAUDE.md
+.claude/
 docker-compose.yml

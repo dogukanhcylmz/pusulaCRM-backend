@@ -6,16 +6,21 @@ namespace DigitestCrm.Api.Dtos;
 public record PagedResult<T>(List<T> Items, int Page, int PageSize, int TotalCount, int TotalPages);
 
 public record CustomerDto(
-    int Id, string CompanyName, string? ContactName, string? Email, string? Phone,
-    string? City, CustomerStatus Status, DateTime CreatedAt, int OpenActivityCount, int QuoteCount);
+    int Id, string CompanyName, string? ContactName, string? ContactTitle, string? Email, string? Phone,
+    string? Landline, string? Website, string? Address, string? City,
+    CustomerStatus Status, DateTime CreatedAt, int OpenActivityCount, int QuoteCount);
 
 public class CustomerSaveDto
 {
     [Required(ErrorMessage = "Firma adı zorunludur."), MaxLength(200)]
     public string CompanyName { get; set; } = string.Empty;
     [MaxLength(150)] public string? ContactName { get; set; }
+    [MaxLength(100)] public string? ContactTitle { get; set; }
     [EmailAddress(ErrorMessage = "Geçerli bir e-posta girin.")] public string? Email { get; set; }
     [MaxLength(30)] public string? Phone { get; set; }
+    [MaxLength(30)] public string? Landline { get; set; }
+    [MaxLength(200)] public string? Website { get; set; }
+    [MaxLength(500)] public string? Address { get; set; }
     [MaxLength(80)] public string? City { get; set; }
     public CustomerStatus Status { get; set; } = CustomerStatus.Lead;
 }

@@ -12,8 +12,12 @@ public class Customer
     public int Id { get; set; }
     public string CompanyName { get; set; } = string.Empty;
     public string? ContactName { get; set; }
+    public string? ContactTitle { get; set; }   
     public string? Email { get; set; }
     public string? Phone { get; set; }
+    public string? Landline { get; set; }       // sabit telefon  istek
+    public string? Website { get; set; }
+    public string? Address { get; set; }        
     public string? City { get; set; }
     public CustomerStatus Status { get; set; } = CustomerStatus.Lead;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

@@ -69,6 +69,9 @@ namespace DigitestCrm.Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
+
                     b.Property<string>("City")
                         .HasColumnType("text");
 
@@ -80,10 +83,16 @@ namespace DigitestCrm.Api.Migrations
                     b.Property<string>("ContactName")
                         .HasColumnType("text");
 
+                    b.Property<string>("ContactTitle")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Landline")
                         .HasColumnType("text");
 
                     b.Property<string>("Phone")
@@ -91,6 +100,9 @@ namespace DigitestCrm.Api.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Website")
                         .HasColumnType("text");
 
                     b.HasKey("Id");

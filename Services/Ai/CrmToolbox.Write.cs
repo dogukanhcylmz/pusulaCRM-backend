@@ -36,8 +36,12 @@ public partial class CrmToolbox
         {
             CompanyName = GetString(a, "companyName") ?? "",
             ContactName = GetString(a, "contactName"),
+            ContactTitle = GetString(a, "contactTitle"),
             Email = GetString(a, "email"),
             Phone = GetString(a, "phone"),
+            Landline = GetString(a, "landline"),
+            Website = GetString(a, "website"),
+            Address = GetString(a, "address"),
             City = GetString(a, "city"),
             Status = ParseEnum<CustomerStatus>(GetString(a, "status")) ?? CustomerStatus.Lead
         };
@@ -45,8 +49,12 @@ public partial class CrmToolbox
 
         var details = new List<string>();
         AddIf(details, "Yetkili", dto.ContactName);
+        AddIf(details, "Unvan", dto.ContactTitle);
         AddIf(details, "E-posta", dto.Email);
         AddIf(details, "Telefon", dto.Phone);
+        AddIf(details, "Sabit telefon", dto.Landline);
+        AddIf(details, "Web sitesi", dto.Website);
+        AddIf(details, "Adres", dto.Address);
         AddIf(details, "Şehir", dto.City);
         details.Add($"Durum: {Labels.Customer(dto.Status)}");
 
@@ -63,8 +71,12 @@ public partial class CrmToolbox
         {
             CompanyName = GetString(a, "companyName") ?? current.CompanyName,
             ContactName = GetString(a, "contactName") ?? current.ContactName,
+            ContactTitle = GetString(a, "contactTitle") ?? current.ContactTitle,
             Email = GetString(a, "email") ?? current.Email,
             Phone = GetString(a, "phone") ?? current.Phone,
+            Landline = GetString(a, "landline") ?? current.Landline,
+            Website = GetString(a, "website") ?? current.Website,
+            Address = GetString(a, "address") ?? current.Address,
             City = GetString(a, "city") ?? current.City,
             Status = ParseEnum<CustomerStatus>(GetString(a, "status")) ?? current.Status
         };
@@ -73,8 +85,12 @@ public partial class CrmToolbox
         var changes = new List<string>();
         Diff(changes, "Firma adı", current.CompanyName, dto.CompanyName);
         Diff(changes, "Yetkili", current.ContactName, dto.ContactName);
+        Diff(changes, "Unvan", current.ContactTitle, dto.ContactTitle);
         Diff(changes, "E-posta", current.Email, dto.Email);
         Diff(changes, "Telefon", current.Phone, dto.Phone);
+        Diff(changes, "Sabit telefon", current.Landline, dto.Landline);
+        Diff(changes, "Web sitesi", current.Website, dto.Website);
+        Diff(changes, "Adres", current.Address, dto.Address);
         Diff(changes, "Şehir", current.City, dto.City);
         Diff(changes, "Durum", Labels.Customer(current.Status), Labels.Customer(dto.Status));
 
