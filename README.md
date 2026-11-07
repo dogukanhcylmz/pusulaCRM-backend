@@ -2,6 +2,14 @@
 
 Müşteri, aktivite, teklif işleri ve yapay zeka asistanı. 
 
+## Ekran görüntüleri
+
+![Genel bakış](screenshots/dashboard.png)
+
+| Teklif detayı | Asistan |
+|---|---|
+| ![Teklif detayı](screenshots/quote-detail.png) | ![Asistan](screenshots/assistant.png) |
+
 ## Kullandıklarım
 
 - ASP.NET Core 8 Web API
