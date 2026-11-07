@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Text;
 
-namespace DigitestCrm.Api.Services;
+namespace PusulaCrm.Api.Services;
 
 /// <summary>
 /// Türkçeye uygun metin karşılaştırma: büyük/küçük harf (İ/i, I/ı) ve

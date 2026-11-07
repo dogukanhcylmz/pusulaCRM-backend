@@ -4,8 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>DigitestCrm.Api</RootNamespace>
-    <UserSecretsId>digitestcrm-api-6f1c2a</UserSecretsId>
+    <RootNamespace>PusulaCrm.Api</RootNamespace>
+    <UserSecretsId>pusulacrm-api-6f1c2a</UserSecretsId>
     <!-- Test projesi aynı klasör altında; API derlemesine karışmasın -->
     <DefaultItemExcludes>$(DefaultItemExcludes);tests/**</DefaultItemExcludes>
   </PropertyGroup>
@@ -17,7 +17,7 @@
 
   <!-- Teklif PDF'indeki logo; dll içine gömülür, Docker'da ayrı dosya gerekmez -->
   <ItemGroup>
-    <EmbeddedResource Include="Assets\logo_digitest.png" LogicalName="DigitestCrm.Api.Assets.logo_digitest.png" />
+    <EmbeddedResource Include="Assets\logo.png" LogicalName="PusulaCrm.Api.Assets.logo.png" />
   </ItemGroup>
 
   <ItemGroup>

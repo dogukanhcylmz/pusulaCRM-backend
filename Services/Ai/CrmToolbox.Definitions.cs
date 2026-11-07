@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Nodes;
 
-namespace DigitestCrm.Api.Services.Ai;
+namespace PusulaCrm.Api.Services.Ai;
 
 /// Modele gönderilen ai nin kullanabileci araç listesi JSON olarak döndürüyorum.
 public partial class CrmToolbox

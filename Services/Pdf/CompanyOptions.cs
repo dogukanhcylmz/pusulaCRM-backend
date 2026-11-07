@@ -1,4 +1,4 @@
-namespace DigitestCrm.Api.Services.Pdf;
+namespace PusulaCrm.Api.Services.Pdf;
 
 /// Teklif PDF'inde görünen firma bilgileri (appsettings "Company").
 /// Boş bırakılan alan PDF'te hiç gösterilmez.
@@ -6,7 +6,7 @@ public class CompanyOptions
 {
     public const string Section = "Company";
 
-    public string Name { get; set; } = "DİGİTEST A.Ş.";
+    public string Name { get; set; } = "PUSULA YAZILIM A.Ş.";
     public string? Address { get; set; }
     public string? Phone { get; set; }
     public string? Fax { get; set; }

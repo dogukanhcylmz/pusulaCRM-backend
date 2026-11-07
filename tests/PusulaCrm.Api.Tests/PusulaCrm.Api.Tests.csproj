@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\DigitestCrm.Api.csproj" />
+    <ProjectReference Include="..\..\PusulaCrm.Api.csproj" />
   </ItemGroup>
 
 </Project>

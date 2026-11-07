@@ -1,8 +1,8 @@
 using System.Globalization;
 using System.Text;
-using DigitestCrm.Api.Models;
+using PusulaCrm.Api.Models;
 
-namespace DigitestCrm.Api.Services.Ai;
+namespace PusulaCrm.Api.Services.Ai;
 
 //kural tabanlı yedek asistan. internetsiz çalışması için
 

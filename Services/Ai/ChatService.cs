@@ -1,9 +1,9 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Microsoft.Extensions.Options;
-using DigitestCrm.Api.Dtos;
+using PusulaCrm.Api.Dtos;
 
-namespace DigitestCrm.Api.Services.Ai;
+namespace PusulaCrm.Api.Services.Ai;
 
 public class ChatService
 {

@@ -1,4 +1,4 @@
-# digitestCRM — yerel PostgreSQL
+# Pusula CRM — yerel PostgreSQL
 # Başlat:  docker compose up -d
 # Durdur:  docker compose down          (veriler korunur)
 # Sıfırla: docker compose down -v       (TÜM veriler silinir; açılışta örnek veriler yeniden yüklenir)
@@ -8,22 +8,22 @@
 services:
   db:
     image: postgres:16-alpine
-    container_name: digitestcrm-db
+    container_name: pusulacrm-db
     restart: unless-stopped
     environment:
-      POSTGRES_DB: digitestcrm
-      POSTGRES_USER: digitest
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-digitest_dev}
+      POSTGRES_DB: pusulacrm
+      POSTGRES_USER: pusula
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pusula_dev}
       TZ: UTC
     ports:
       - "5433:5432"
     volumes:
-      - digitestcrm-data:/var/lib/postgresql/data
+      - pusulacrm-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U digitest -d digitestcrm"]
+      test: ["CMD-SHELL", "pg_isready -U pusula -d pusulacrm"]
       interval: 5s
       timeout: 3s
       retries: 10
 
 volumes:
-  digitestcrm-data:
+  pusulacrm-data:

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using DigitestCrm.Api.Models;
+using PusulaCrm.Api.Models;
 
-namespace DigitestCrm.Api.Dtos;
+namespace PusulaCrm.Api.Dtos;
 
 public record PagedResult<T>(List<T> Items, int Page, int PageSize, int TotalCount, int TotalPages);
 

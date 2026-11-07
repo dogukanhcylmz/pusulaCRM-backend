@@ -4,11 +4,11 @@ using Microsoft.Extensions.Options;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-using DigitestCrm.Api.Dtos;
-using DigitestCrm.Api.Models;
-using DigitestCrm.Api.Services.Ai;
+using PusulaCrm.Api.Dtos;
+using PusulaCrm.Api.Models;
+using PusulaCrm.Api.Services.Ai;
 
-namespace DigitestCrm.Api.Services.Pdf;
+namespace PusulaCrm.Api.Services.Pdf;
 
 public record QuotePdf(byte[] Content, string FileName);
 
@@ -367,8 +367,8 @@ public class QuotePdfService
 
     private static byte[] LoadLogo()
     {
-        using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("DigitestCrm.Api.Assets.logo_digitest.png")
-            ?? throw new InvalidOperationException("Logo kaynağı bulunamadı (Assets/logo_digitest.png).");
+        using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("PusulaCrm.Api.Assets.logo.png")
+            ?? throw new InvalidOperationException("Logo kaynağı bulunamadı (Assets/logo.png).");
         using var ms = new MemoryStream();
         stream.CopyTo(ms);
         return ms.ToArray();

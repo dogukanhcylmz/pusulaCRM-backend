@@ -1,9 +1,9 @@
-using DigitestCrm.Api.Data;
-using DigitestCrm.Api.Models;
-using DigitestCrm.Api.Services;
+using PusulaCrm.Api.Data;
+using PusulaCrm.Api.Models;
+using PusulaCrm.Api.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace DigitestCrm.Api.Tests;
+namespace PusulaCrm.Api.Tests;
 
 public class CustomerPagingTests
 {

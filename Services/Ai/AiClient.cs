@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.Json.Nodes;
 using Microsoft.Extensions.Options;
 
-namespace DigitestCrm.Api.Services.Ai;
+namespace PusulaCrm.Api.Services.Ai;
 
 // Hata veren modelleri geçici olarak bekletip tekrar tekrar deneme
 public class ModelHealth

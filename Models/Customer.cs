@@ -1,4 +1,4 @@
-namespace DigitestCrm.Api.Models;
+namespace PusulaCrm.Api.Models;
 
 public enum CustomerStatus
 {

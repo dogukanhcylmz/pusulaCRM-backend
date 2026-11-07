@@ -1,4 +1,4 @@
-namespace DigitestCrm.Api.Services.Ai;
+namespace PusulaCrm.Api.Services.Ai;
 
 public class AiOptions
 {
@@ -29,8 +29,8 @@ public class AssistantOptions
 {
     public const string Section = "Assistant";
 
-    public string ProductName { get; set; } = "digitestCRM";
-    public string SupportContact { get; set; } = "destek@digitestcrm.com";
+    public string ProductName { get; set; } = "Pusula CRM";
+    public string SupportContact { get; set; } = "destek@pusulacrm.example";
     public string TimeZone { get; set; } = "Europe/Istanbul";
     public string UserName { get; set; } = "Demo Kullanıcı";
     public string UserRole { get; set; } = "Satış Temsilcisi";

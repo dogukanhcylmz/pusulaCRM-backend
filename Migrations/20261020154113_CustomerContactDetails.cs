@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace DigitestCrm.Api.Migrations
+namespace PusulaCrm.Api.Migrations
 {
     /// <inheritdoc />
     public partial class CustomerContactDetails : Migration

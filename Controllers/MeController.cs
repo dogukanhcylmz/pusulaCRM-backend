@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using DigitestCrm.Api.Dtos;
-using DigitestCrm.Api.Services.Ai;
+using PusulaCrm.Api.Dtos;
+using PusulaCrm.Api.Services.Ai;
 
-namespace DigitestCrm.Api.Controllers;
+namespace PusulaCrm.Api.Controllers;
 
 [ApiController]
 [Route("api/me")]

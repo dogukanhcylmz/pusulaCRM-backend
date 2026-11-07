@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using DigitestCrm.Api.Data;
-using DigitestCrm.Api.Dtos;
-using DigitestCrm.Api.Models;
-using DigitestCrm.Api.Services.Ai;
+using PusulaCrm.Api.Data;
+using PusulaCrm.Api.Dtos;
+using PusulaCrm.Api.Models;
+using PusulaCrm.Api.Services.Ai;
 
-namespace DigitestCrm.Api.Services;
+namespace PusulaCrm.Api.Services;
 
 public class DashboardService
 {

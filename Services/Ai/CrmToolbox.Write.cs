@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Nodes;
-using DigitestCrm.Api.Dtos;
-using DigitestCrm.Api.Models;
+using PusulaCrm.Api.Dtos;
+using PusulaCrm.Api.Models;
 
-namespace DigitestCrm.Api.Services.Ai;
+namespace PusulaCrm.Api.Services.Ai;
 
 public partial class CrmToolbox
 {

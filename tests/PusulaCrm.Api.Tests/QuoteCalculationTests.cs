@@ -1,6 +1,6 @@
-using DigitestCrm.Api.Models;
+using PusulaCrm.Api.Models;
 
-namespace DigitestCrm.Api.Tests;
+namespace PusulaCrm.Api.Tests;
 
 public class QuoteCalculationTests
 {

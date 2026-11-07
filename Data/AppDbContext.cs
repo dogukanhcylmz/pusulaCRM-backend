@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using DigitestCrm.Api.Models;
+using PusulaCrm.Api.Models;
 
-namespace DigitestCrm.Api.Data;
+namespace PusulaCrm.Api.Data;
 
 public class AppDbContext : DbContext
 {

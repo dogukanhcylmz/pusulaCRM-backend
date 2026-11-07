@@ -3,9 +3,9 @@ using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
-using DigitestCrm.Api.Models;
+using PusulaCrm.Api.Models;
 
-namespace DigitestCrm.Api.Services.Ai;
+namespace PusulaCrm.Api.Services.Ai;
 
 public partial class CrmToolbox
 {

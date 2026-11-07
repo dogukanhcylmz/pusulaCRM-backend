@@ -1,4 +1,4 @@
-﻿namespace DigitestCrm.Api.Services.Ai;
+﻿namespace PusulaCrm.Api.Services.Ai;
 
 public class ToolException : Exception
 {

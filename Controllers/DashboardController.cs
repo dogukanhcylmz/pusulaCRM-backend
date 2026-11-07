@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using DigitestCrm.Api.Dtos;
-using DigitestCrm.Api.Services;
+using PusulaCrm.Api.Dtos;
+using PusulaCrm.Api.Services;
 
-namespace DigitestCrm.Api.Controllers;
+namespace PusulaCrm.Api.Controllers;
 
 [ApiController]
 [Route("api/dashboard")]

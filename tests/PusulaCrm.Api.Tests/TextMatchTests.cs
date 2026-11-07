@@ -1,6 +1,6 @@
-using DigitestCrm.Api.Services;
+using PusulaCrm.Api.Services;
 
-namespace DigitestCrm.Api.Tests;
+namespace PusulaCrm.Api.Tests;
 
 public class TextMatchTests
 {

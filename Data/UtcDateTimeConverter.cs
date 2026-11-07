@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace DigitestCrm.Api.Data;
+namespace PusulaCrm.Api.Data;
 
 
 public class UtcDateTimeConverter : ValueConverter<DateTime, DateTime>

@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Nodes;
-using DigitestCrm.Api.Models;
+using PusulaCrm.Api.Models;
 
-namespace DigitestCrm.Api.Services.Ai;
+namespace PusulaCrm.Api.Services.Ai;
 
 public partial class CrmToolbox
 {

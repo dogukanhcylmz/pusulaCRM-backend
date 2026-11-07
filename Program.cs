@@ -2,10 +2,10 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using DigitestCrm.Api.Data;
-using DigitestCrm.Api.Services;
-using DigitestCrm.Api.Services.Ai;
-using DigitestCrm.Api.Services.Pdf;
+using PusulaCrm.Api.Data;
+using PusulaCrm.Api.Services;
+using PusulaCrm.Api.Services.Ai;
+using PusulaCrm.Api.Services.Pdf;
 
 // QuestPDF topluluk lisansı (yıllık ciro 1M USD altı ücretsiz)
 QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;

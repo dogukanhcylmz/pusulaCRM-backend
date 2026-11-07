@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Caching.Memory;
 
-namespace DigitestCrm.Api.Services.Ai;
+namespace PusulaCrm.Api.Services.Ai;
 
 public record PendingAction(string Id, string Tool, string PayloadJson, string Title, string Summary, List<string> Details, bool Danger);
 

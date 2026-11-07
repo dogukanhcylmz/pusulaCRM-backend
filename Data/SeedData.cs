@@ -1,6 +1,6 @@
-using DigitestCrm.Api.Models;
+using PusulaCrm.Api.Models;
 
-namespace DigitestCrm.Api.Data;
+namespace PusulaCrm.Api.Data;
 
 /// <summary>
 /// Sunumda boş ekranla karşılaşmamak için örnek veriler.

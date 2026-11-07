@@ -1,4 +1,4 @@
-# digitestCRM — API
+# Pusula CRM — API
 
 Müşteri, aktivite, teklif işleri ve yapay zeka asistanı. 
 

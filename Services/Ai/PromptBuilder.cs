@@ -1,8 +1,8 @@
 using System.Globalization;
 using Microsoft.Extensions.Options;
-using DigitestCrm.Api.Dtos;
+using PusulaCrm.Api.Dtos;
 
-namespace DigitestCrm.Api.Services.Ai;
+namespace PusulaCrm.Api.Services.Ai;
 
 /// <summary>
 /// Asistanın sistem promptunu üretir. Şablondaki yer tutucular

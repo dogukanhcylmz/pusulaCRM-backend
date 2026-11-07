@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using DigitestCrm.Api.Dtos;
-using DigitestCrm.Api.Models;
-using DigitestCrm.Api.Services;
-using DigitestCrm.Api.Services.Pdf;
+using PusulaCrm.Api.Dtos;
+using PusulaCrm.Api.Models;
+using PusulaCrm.Api.Services;
+using PusulaCrm.Api.Services.Pdf;
 
-namespace DigitestCrm.Api.Controllers;
+namespace PusulaCrm.Api.Controllers;
 
 [ApiController]
 [Route("api/quotes")]

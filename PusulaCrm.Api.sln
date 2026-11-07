@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36804.6
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigitestCrm.Api", "DigitestCrm.Api.csproj", "{5FB428DE-00A3-50F5-B4BF-E98E00E7B42A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PusulaCrm.Api", "PusulaCrm.Api.csproj", "{5FB428DE-00A3-50F5-B4BF-E98E00E7B42A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0AB3BF05-4346-4AA6-1389-037BE0695223}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigitestCrm.Api.Tests", "tests\DigitestCrm.Api.Tests\DigitestCrm.Api.Tests.csproj", "{FADC7041-2E9C-4B3E-BAEB-3B1CE9AF7205}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PusulaCrm.Api.Tests", "tests\PusulaCrm.Api.Tests\PusulaCrm.Api.Tests.csproj", "{FADC7041-2E9C-4B3E-BAEB-3B1CE9AF7205}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

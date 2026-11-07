@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using DigitestCrm.Api.Data;
-using DigitestCrm.Api.Dtos;
-using DigitestCrm.Api.Models;
+using PusulaCrm.Api.Data;
+using PusulaCrm.Api.Dtos;
+using PusulaCrm.Api.Models;
 
-namespace DigitestCrm.Api.Services;
+namespace PusulaCrm.Api.Services;
 
 public class CustomerService
 {

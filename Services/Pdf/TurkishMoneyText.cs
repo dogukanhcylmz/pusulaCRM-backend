@@ -1,4 +1,4 @@
-namespace DigitestCrm.Api.Services.Pdf;
+namespace PusulaCrm.Api.Services.Pdf;
 
 /// Tutarı yazıya çevirir: 12500.50 → "on iki bin beş yüz Türk Lirası elli Kuruş"
 public static class TurkishMoneyText
